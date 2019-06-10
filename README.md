@@ -8,6 +8,6 @@ https://github.com/janeasystems/nodejs-mobile-samples/tree/master/ios/native-xco
 
 INSTRUCTIONS
 
-cd taxiApp
-npm install
+cd taxiApp<br/>
+npm install<br/>
 npm start

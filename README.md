@@ -5,3 +5,9 @@ iOS application integrated with a full-fledged Node.js runtime for Android and i
 
 https://github.com/janeasystems/nodejs-mobile-samples/tree/master/ios/native-xcode-node-folder
 
+
+INSTRUCTIONS
+
+cd taxiApp
+npm install
+npm start

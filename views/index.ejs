@@ -3,7 +3,17 @@
     <% include ./partials/head %>
   </head>
   <body>
-    <h1>The Best App Evar</h1>
+    <h1 class='main-font top-margin'>Toad's Place</h1>
+    <h4 class='sub-font'>Presents</h4>
+    <div class='logo'>
+      <img class='checker' src="/images/green-checker.png" />
+      <p class='main-font lg-font glow'>hip-hop taxi</p>
+      <p class='directions'>ENTER PHONE NUMBER:</P>
+      <form action="/submit-phone/" method="POST">
+        <input class='phone-input' type='text' name='phone'></input>
+      </form>
+      <img class='checker' src="/images/green-checker.png" />
+    </div>
   </body>
-  <script type="text/javascript" src="/index.js"></script>
+  <script type="text/javascript" src="/js/index.js"></script>
 </html>

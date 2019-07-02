@@ -1,4 +1,51 @@
-body{
+/* body{
+  background: #262626;
+  margin: 0;
+} */
+
+.num-pad{
+  background: #757575;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.no-pad{
+  padding: 0;
+}
+
+.num-btn{
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 4px 2px -2px grey;
+  background: #bbbbbb;
+  margin: 5px;
+  min-height: 70px;
+}
+
+.num-row{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin: 0 !important;
+  text-align: center;
+}
+
+.digit{
+  font-size: calc(24px + .5vh);
+  margin: 0;
+}
+
+.letters{
+  font-weight: bold;
+}
+
+.hidden{
+  display: none;
+}
+
+
+.dark-bg{
   background: #262626;
   margin: 0;
 }

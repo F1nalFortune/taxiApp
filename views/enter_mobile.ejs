@@ -4,6 +4,109 @@
     <% include ./partials/head %>
   </head>
   <body>
-    <p>Test</p>
+    <i class="fa fa-arrow-left fa-lg"></i>
+    <p>Enter your mobile number</p>
+    <form action="/enter-mobile" method="POST" id='submit-phone'>
+      <input type='text' name='mobile' id='mobile'>
+      <i class="far fa-arrow-alt-circle-right fa-3x" id='arrowBtn'></i>
+      <input class='hidden' type='submit' id='primaryBtn'/>
+    </form>
+    <div class="num-pad">
+          <div class="row num-row">
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="1" class="num-btn">
+                <p class="digit">1</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="2" class="num-btn">
+                <p class="digit">2</p>
+                <p class="letters">A B C</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="3" class="num-btn">
+                <p class="digit">3</p>
+                <p class="letters">D E F</p>
+              </div>
+            </div>
+          </div>
+          <div class="row num-row">
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="4" class="num-btn">
+                <p class="digit">4</p>
+                <p class="letters">G H I</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="5" class="num-btn">
+                <p class="digit">5</p>
+                <p class="letters">J K L</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="6" class="num-btn">
+                <p class="digit">6</p>
+                <p class="letters">M N O</p>
+              </div>
+            </div>
+          </div>
+          <div class="row num-row">
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="7" class="num-btn">
+                <p class="digit">7</p>
+                <p class="letters">P Q R S</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="8" class="num-btn">
+                <p class="digit">8</p>
+                <p class="letters">T U V</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="9" class="num-btn">
+                <p class="digit">9</p>
+                <p class="letters">W X Y Z</p>
+              </div>
+            </div>
+          </div>
+          <div class="row num-row">
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="." class="num-btn">
+                .
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="0" class="num-btn">
+                <p class="digit">0</p>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 no-pad">
+              <div id="del" class="num-btn">
+                <i class="fas fa-backspace fa-2x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
   </body>
+  <script>
+    $(document).ready(function(){
+      for(i=0;i<10;i++){
+        document.getElementById(i).addEventListener("click", function(){
+          var old_val = document.getElementById('mobile').value;
+          var new_val = old_val + $(this).attr('id');
+          document.getElementById('mobile').value = new_val;
+        })
+      }
+      $("#del").click(function(){
+        var old_val = document.getElementById('mobile').value;
+        var new_val = old_val.slice(0, -1);
+        document.getElementById('mobile').value = new_val;
+      })
+    })
+    $("#arrowBtn").click(function(){
+      $("#primaryBtn").click();
+    })
+  </script>
 </html>

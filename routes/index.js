@@ -8,9 +8,16 @@ router.get('/', (req, res, next) =>  {
   res.render('index.ejs', { title: 'Express', user: req.user });
 });
 
+router.get('/enter_mobile', function(req, res){
+  res.render('enter_mobile.ejs', {
+    title: 'Enter Mobile',
+    user: req.user
+  })
+})
+
 router.post('/submit-phone/', function(req, res){
   var phone = req.body.phone;
-  
+
 })
 
 

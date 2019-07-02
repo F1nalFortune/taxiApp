@@ -8,6 +8,15 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var back = require('express-back');
+var internetAvailable = require("internet-available");
+
+internetAvailable().then(function(){
+  console.log("Internet available");
+}).catch(function(){
+  //TODO
+  //display a 'CONNECTION ERROR'
+  console.log("Houston we have a problem")
+});
 
 var routes = require('./routes/index');
 // var users = require('./routes/users');

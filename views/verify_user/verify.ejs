@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <i class="fa fa-arrow-left fa-lg" id='backBtn'></i>
+    <p>Enter 4 digit code texted to +1<%= phone %></p>
+    <form action="/confirm" method="post">
+      <input type="tel" name="pin" placeholder="1234" required>
+      <% var numberPattern = /\d+/g; %>
+      <% var phoneNumber = "1" + phone.match(numberPattern).join("") %>
+      <input type="hidden" name="phone" value="<%= phoneNumber %>">
+      <input type="hidden" name="requestId" value="<%= requestId %>" >
+      <input type="submit" value="Verify PIN">
+  </form>
+  <div class="num-pad">
+      <div class='row submit-section'>
+        <div class='col-xs-9 col-sm-9'>
+          <div id='info-section'>
+            <div id="countdown"></div>
+          </div>
+        </div>
+        <div class='col-xs-3 col-sm-3'>
+          <i class="far fa-arrow-alt-circle-right fa-3x" id='arrowBtn'></i>
+        </div>
+      </div>
+        <div class="row num-row">
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="1" class="num-btn">
+              <p class="digit">1</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="2" class="num-btn">
+              <p class="digit">2</p>
+              <p class="letters">A B C</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="3" class="num-btn">
+              <p class="digit">3</p>
+              <p class="letters">D E F</p>
+            </div>
+          </div>
+        </div>
+        <div class="row num-row">
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="4" class="num-btn">
+              <p class="digit">4</p>
+              <p class="letters">G H I</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="5" class="num-btn">
+              <p class="digit">5</p>
+              <p class="letters">J K L</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="6" class="num-btn">
+              <p class="digit">6</p>
+              <p class="letters">M N O</p>
+            </div>
+          </div>
+        </div>
+        <div class="row num-row">
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="7" class="num-btn">
+              <p class="digit">7</p>
+              <p class="letters">P Q R S</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="8" class="num-btn">
+              <p class="digit">8</p>
+              <p class="letters">T U V</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="9" class="num-btn">
+              <p class="digit">9</p>
+              <p class="letters">W X Y Z</p>
+            </div>
+          </div>
+        </div>
+        <div class="row num-row">
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="." class="num-btn">
+              .
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="0" class="num-btn">
+              <p class="digit">0</p>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 no-pad">
+            <div id="del" class="num-btn">
+              <i class="fas fa-backspace fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </body>
+  <script>
+    $(document).ready(function(){
+      for(i=0;i<10;i++){
+        document.getElementById(i).addEventListener("click", function(){
+          var old_val = document.getElementById('mobile').value;
+          var new_val = old_val + $(this).attr('id');
+          document.getElementById('mobile').value = new_val;
+        })
+      }
+      $("#del").click(function(){
+        var old_val = document.getElementById('mobile').value;
+        var new_val = old_val.slice(0, -1);
+        document.getElementById('mobile').value = new_val;
+      })
+      $("#backBtn").click(function(){
+        window.history.back();
+      })
+      $("#arrowBtn").click(function(){
+        // var unmasked = $("#mobile").unmask().val();
+        // alert($("#mobile").unmask());
+        $("#primaryBtn").click();
+      })
+      var timeleft = 10;
+      var downloadTimer = setInterval(function(){
+        document.getElementById("countdown").innerHTML = "Resend code in: " + timeleft + " seconds.";
+        timeleft -= 1;
+        if(timeleft <= 0){
+          clearInterval(downloadTimer);
+          $("#info-section").hide();
+          $("#info-section").html(""+
+            "<p>Resend to +1<%= phone %></p>" +
+            "<p>How would you like to receive code?</p>" +
+            "<button onclick='callwithCode()'>Call me with code</button>" +
+            "<a href='/'>Cancel</a>");
+          $("#info-section").slideToggle();
+        }
+      }, 1000);
+
+      function callWithCode(){
+        var numberPattern = /\d+/g;
+        var phone = "<%= phone %>";
+        var phone = phone.match(numberPattern).join("");
+        $.ajax({
+          url:"/call_code/" + phone,
+          type: "GET",
+          success:function(){
+            console.log('success');
+            $("#info-section").html(""+
+          "Calling " + phone + " with code.")
+          }
+
+        })
+      }
+
+    })
+
+  </script>
+  <script src="js/jquery.mask.js"></script>
+</html>

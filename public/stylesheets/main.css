@@ -2,7 +2,13 @@
   background: #262626;
   margin: 0;
 } */
-
+.submit-section{
+  margin: 0;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  background: white;
+  font-size: calc(12px + 0.5vh);
+}
 .num-pad{
   background: #757575;
   bottom: 0;
@@ -122,6 +128,9 @@
 
 }
 
+.center{
+  text-align: center;
+}
 
 /* NEON GLOW
  */

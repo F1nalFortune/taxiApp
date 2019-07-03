@@ -19,6 +19,9 @@ internetAvailable().then(function(){
 });
 
 var routes = require('./routes/index');
+var register = require('./routes/register')
+var verify = require('./routes/verify');
+var status = require('./routes/status');
 // var users = require('./routes/users');
 
 var app = express();
@@ -26,8 +29,8 @@ var app = express();
 // view engine setup
 var engines = require('consolidate');
 
-app.engine('html', engines.ejs);
-app.set('view engine', 'pug');
+// app.engine('html', engines.ejs);
+app.set('view engine', 'ejs');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -51,6 +54,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes);
+app.use(register);
+app.use(verify);
+app.use(status);
 // app.use('/users', users);
 
 // add authenticate method
@@ -84,7 +90,7 @@ if (app.get('env') === 'development') {
 // mongoose.Promise = global.Promise;
 // Local Strat needs a model.
 // Connect to database
-mongoose.connect('mongodb://localhost/toads-taxi');
+mongoose.connect('mongodb://localhost/toads-taxi', {useNewUrlParser: true});
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {

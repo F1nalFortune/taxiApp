@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <% include ./partials/head %>
+    <% include ../partials/head %>
   </head>
   <body>
-    <i class="fa fa-arrow-left fa-lg"></i>
+    <i class="fa fa-arrow-left fa-lg" id='backBtn'></i>
     <p>Enter your mobile number</p>
-    <form action="/enter-mobile" method="POST" id='submit-phone'>
-      <input type='text' name='mobile' id='mobile'>
-      <i class="far fa-arrow-alt-circle-right fa-3x" id='arrowBtn'></i>
+    <p id='result'></p>
+    <form action="/register" method="POST" id='submit-phone'>
+      <input type='text' name='number' id='mobile' class='phone_us' placeholder="(555)-555-5555">
+      <input type='hidden' name='real-number' id='real-number'>
       <input class='hidden' type='submit' id='primaryBtn'/>
     </form>
     <div class="num-pad">
+        <div class='row submit-section'>
+          <div class='col-xs-9 col-sm-9'>
+            <p>
+              By continuing you may receive an SMS for verification. Message &
+              data rates may apply.
+            </p>
+          </div>
+          <div class='col-xs-3 col-sm-3'>
+            <i class="far fa-arrow-alt-circle-right fa-3x" id='arrowBtn'></i>
+          </div>
+        </div>
           <div class="row num-row">
             <div class="col-xs-4 col-sm-4 no-pad">
               <div id="1" class="num-btn">
@@ -104,9 +116,17 @@
         var new_val = old_val.slice(0, -1);
         document.getElementById('mobile').value = new_val;
       })
+      $("#backBtn").click(function(){
+        window.history.back();
+      })
+      $('.phone_us').mask('(000) 000-0000');
+      $("#arrowBtn").click(function(){
+        // var unmasked = $("#mobile").unmask().val();
+        // alert($("#mobile").unmask());
+        $("#primaryBtn").click();
+      })
     })
-    $("#arrowBtn").click(function(){
-      $("#primaryBtn").click();
-    })
+
   </script>
+  <script src="js/jquery.mask.js"></script>
 </html>

@@ -6,11 +6,11 @@ var internetAvailable = require("internet-available");
 
 /* GET home page. */
 router.get('/', hasInternet, (req, res, next) =>  {
-  res.render('index.ejs', { title: 'Express', user: req.user });
+  res.render('index', { title: 'Express', user: req.user });
 });
 
 router.get('/enter_mobile', hasInternet, function(req, res){
-  res.render('enter_mobile.ejs', {
+  res.render('verify_user/enter_mobile', {
     title: 'Enter Mobile',
     user: req.user
   })

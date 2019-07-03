@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./partials/head %>
+  </head>
+  <body>
+  <form action="/create_account" method="POST">
+    <div class='row'>
+      <div class='col-xs-12 col-sm-12'>
+        <h1>Account</h1>
+        <div class="form-group">
+          <label for="exampleInputEmail1">* Email</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">* Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h1>Profile</h1>
+      </div>
+      <div class='col-xs-6 col-sm-6'>
+        <div class="form-group">
+          <label for="exampleInputEmail1">First</label>
+          <input type="text" class="form-control" placeholder="First">
+        </div>
+      </div>
+      <div class='col-xs-6 col-sm-6'>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Last</label>
+          <input type="text" class="form-control" placeholder="Last">
+        </div>
+      </div>
+      <div class='col-xs-12 col-sm-12'>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Mobile Number</label>
+          <input type="text" class="form-control" placeholder="mobile">
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-xs-12 col-sm-12'>
+        <input type='submit' value='Submit'>
+      </div>
+    </div>
+  </form>
+  </body>
+  <script>
+
+  </script>
+  <script src="js/jquery.mask.js"></script>
+</html>

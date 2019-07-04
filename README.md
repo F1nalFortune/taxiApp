@@ -3,18 +3,22 @@
 iOS application integrated with a full-fledged Node.js runtime for Android and iOS
 
 # Cordova Application
-
+Stub out basic cordova project
+```
 cordova create toads-taxi com.toadstaxi.www toadsTaxi
 cordova platform add ios
 cordova plugin add cordova-plugin-dialogs
 cordova plugin add cordova-plugin-network-information
+```
 
 Add the following entry after the first set of <allow-intent.../> tags (before the <platform> sections).
   
-  // <allow-navigation href="https://www.toadstaxi.com" />
+  ```
+  <allow-navigation href="https://www.toadstaxi.com" />
+  ```
   
 Change the index.js file in the cordova app to the following:
-//
+```
 var app = {
     // Application Constructor
     initialize: function() {
@@ -42,10 +46,11 @@ var app = {
 };
 
 app.initialize();
-
+```
 
 
 Replace Body of index.html with following code:
+```
 Verifying connectivity..
 <a id="bkpLink" href="https://YOUR-HOSTED-WEB-APP-URL">YOUR-HOSTED-WEB-APP-URL</a>
 
@@ -58,12 +63,16 @@ Verifying connectivity..
 </div>
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="scripts/index.js"></script>
-
+```
 Replace Meta tag of index.html head tag with following:
+```
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://YOUR-HOSTED-WEB-APP-URL https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+```
 
 
 # External Website
-cd taxiApp<br/>
-npm install<br/>
+```
+cd taxiApp
+npm install
 npm start
+```

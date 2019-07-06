@@ -2,10 +2,10 @@
 logs
 *.log
 
-
+.env
 node_modules
 .DS_Store
-
+private.key
 
 # Runtime data
 pids

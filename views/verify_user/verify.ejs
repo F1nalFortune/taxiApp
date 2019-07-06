@@ -7,12 +7,12 @@
     <i class="fa fa-arrow-left fa-lg" id='backBtn'></i>
     <p>Enter 4 digit code texted to +1<%= phone %></p>
     <form action="/confirm" method="post">
-      <input type="tel" name="pin" placeholder="1234" required>
+      <input id='mobile' type="tel" name="pin" placeholder="1234" required readonly>
       <% var numberPattern = /\d+/g; %>
       <% var phoneNumber = "1" + phone.match(numberPattern).join("") %>
       <input type="hidden" name="phone" value="<%= phoneNumber %>">
       <input type="hidden" name="requestId" value="<%= requestId %>" >
-      <input type="submit" value="Verify PIN">
+      <input id='verify_pin' type="submit" value="Verify PIN">
   </form>
   <div class="num-pad">
       <div class='row submit-section'>
@@ -124,7 +124,7 @@
       $("#arrowBtn").click(function(){
         // var unmasked = $("#mobile").unmask().val();
         // alert($("#mobile").unmask());
-        $("#primaryBtn").click();
+        $("#verify_pin").click();
       })
       var timeleft = 10;
       var downloadTimer = setInterval(function(){
@@ -136,8 +136,8 @@
           $("#info-section").html(""+
             "<p>Resend to +1<%= phone %></p>" +
             "<p>How would you like to receive code?</p>" +
-            "<button onclick='callwithCode()'>Call me with code</button>" +
-            "<a href='/'>Cancel</a>");
+            "<button onclick='callwithCode()'>Call me with code</button><br/>" +
+            "<button>Cancel</button>");
           $("#info-section").slideToggle();
         }
       }, 1000);

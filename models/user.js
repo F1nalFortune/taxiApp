@@ -18,9 +18,10 @@ var userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   mobile: String,
+  first: { type: String, required: true },
+  last: { type: String, required: true },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  isVerified: { type: Boolean, default: false },
   admin: { type: Boolean, default: false },
   driver: { type: Boolean, default: false }
 });

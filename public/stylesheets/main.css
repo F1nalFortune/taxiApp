@@ -2,6 +2,12 @@
   background: #262626;
   margin: 0;
 } */
+#verify_pin{
+  display: none;
+}
+#num-pad{
+  display: none;
+}
 .submit-section{
   margin: 0;
   padding-top: 5%;
@@ -28,7 +34,17 @@
   background: #bbbbbb;
   margin: 5px;
   min-height: 70px;
+  -webkit-transition: background-color 500ms linear;
+  -ms-transition: background-color 500ms linear;
+  transition: background-color 500ms linear;
 }
+/*
+.num-btn:hover{
+  background: black;
+  -webkit-transition: background-color 500ms linear;
+  -ms-transition: background-color 500ms linear;
+  transition: background-color 500ms linear;
+} */
 
 .num-row{
   margin-top: 2%;

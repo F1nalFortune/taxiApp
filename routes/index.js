@@ -5,6 +5,12 @@ var User = require('../models/user');
 var internetAvailable = require("internet-available");
 
 /* GET home page. */
+router.get('/home_screen', (req, res) => {
+  res.render('user/home_screen', {
+    title: 'Map',
+    user: req.user
+  })
+})
 router.get('/', hasInternet, (req, res, next) =>  {
   res.render('index', { title: 'Express', user: req.user });
 });

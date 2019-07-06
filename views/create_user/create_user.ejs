@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/stylesheets/create_user.css">
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <div id='email_div'>
+      <i id='email_back' class="fa fa-arrow-left fa-2x"></i>
+      <p>What's your email address?</p>
+      <input type='text' id='email_input' />
+      <div class='row'>
+        <div class='col-xs-3 col-xs-offset-9 col-sm-3 col-sm-offset-9'>
+          <i class="far fa-arrow-alt-circle-right fa-3x" id='email_submit'></i>
+        </div>
+      </div>
+    </div>
+    <div id='pw_div'>
+      <i id='pw_back' class="fa fa-arrow-left fa-2x"></i>
+      <p>Create your account password</p>
+      <input type='password' id='pw_input'>
+      <div class='row'>
+        <div class='col-xs-3 col-xs-offset-9 col-sm-3 col-sm-offset-9'>
+          <i class="far fa-arrow-alt-circle-right fa-3x" id='pw_submit'></i>
+        </div>
+      </div>
+    </div>
+    <div id='name_div'>
+      <i id='name_back' class="fa fa-arrow-left fa-2x"></i>
+      <p>What's your name?</p>
+      <input type='text' id='first_input' />
+      <input type='text' id='last_input' />
+      <div class='row'>
+        <div class='col-xs-3 col-xs-offset-9 col-sm-3 col-sm-offset-9'>
+          <i class="far fa-arrow-alt-circle-right fa-3x" id='name_submit'></i>
+        </div>
+      </div>
+    </div>
+    <form action="/create_user" method="POST" id='create_form'>
+      <input type='text' name='email' id='email'/>
+      <input type='password' name='password' id='password' />
+      <input type='text' name='first' id='first' />
+      <input type='text' name='last' id='last' />
+      <input class='hidden' type='submit' id='primary_btn'/>
+    </form>
+  </body>
+  <script>
+    $(document).ready(function(){
+
+      $("#email_back").click(function(){
+        window.location="/";
+      })
+      $("#pw_back").click(function(){
+        $("#pw_div").hide();
+        $("#email_div").show();
+      });
+      $("#name_back").click(function(){
+        $("#name_div").hide();
+        $("#pw_div").show();
+      })
+      $("#email_submit").click(function(){
+        //TODO
+        //AJAX CALL FOR VALIDATION
+        $("#email_div").hide();
+        $("#pw_div").show();
+        var email = document.getElementById('email_input').value;
+        document.getElementById('email').value = email;
+      })
+      $("#pw_submit").click(function(){
+        //TODO
+        //AJAX CALL FOR VALIDATION
+        $("#pw_div").hide();
+        $("#name_div").show();
+        var password = document.getElementById('pw_input').value;
+        document.getElementById('password').value = password;
+      })
+      $("#name_submit").click(function(){
+        //TODO
+        //AJAX CALL FOR VALIDATION
+        var first = $("#first_input").val();
+        var last = $("#last_input").val();
+        $("#first").val(first);
+        $("#last").val(last);
+        $("#primary_btn").click();
+      })
+    })
+
+  </script>
+  <script src="js/jquery.mask.js"></script>
+</html>

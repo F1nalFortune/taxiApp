@@ -8,11 +8,11 @@
     <p>Enter your mobile number</p>
     <p id='result'></p>
     <form action="/register" method="POST" id='submit-phone'>
-      <input type='text' name='number' id='mobile' class='phone_us' placeholder="(555)-555-5555">
+      <input type='text' name='number' id='mobile' class='phone_us' placeholder="(555)-555-5555" readonly>
       <input type='hidden' name='real-number' id='real-number'>
       <input class='hidden' type='submit' id='primaryBtn'/>
     </form>
-    <div class="num-pad">
+    <div id='num-pad' class="num-pad">
         <div class='row submit-section'>
           <div class='col-xs-9 col-sm-9'>
             <p>
@@ -104,6 +104,7 @@
   </body>
   <script>
     $(document).ready(function(){
+      $("#num-pad").slideToggle({direction: 'up'}, 500)
       for(i=0;i<10;i++){
         document.getElementById(i).addEventListener("click", function(){
           var old_val = document.getElementById('mobile').value;

@@ -60,20 +60,10 @@ router.post('/register', (req, res) => {
       console.log(result);
       let requestId = result.request_id;
       if(result.status == '0') {
-        User.find({mobile: phoneNumber}, function(err, user){
-          if(!err){
-            //display verification code
-            res.render('verify_user/verify', {
-              requestId: requestId,
-              phone: req.body.number
-            });
-          }else{
-            //ask for email
-            res.render('create_user/email', {
-              title: 'Create Account'
-            })
-          }
-        })
+        res.render('verify_user/verify', {
+          requestId: requestId,
+          phone: req.body.number
+        });
       } else {
         //res.status(401).send(result.error_text);
         res.render('verify_user/status', {
@@ -85,6 +75,22 @@ router.post('/register', (req, res) => {
     }
   });
 });
+
+router.post("/create_user", (req, res) => {
+  var user = new User({
+    email: req.body.email,
+    password: req.body.password,
+    first: req.body.first,
+    last: req.body.last,
+    mobile: req.body.mobile
+  });
+  user.save(function(err) {
+    if (err) { return res.status(500).send({ msg: err.message }); }
+    res.render('user/home_screen', {
+      user: req.user
+    })
+  });
+})
 
 
 module.exports = router;

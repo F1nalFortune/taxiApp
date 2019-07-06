@@ -34,10 +34,12 @@ console.log('value of requestid in verify post handler is ' + requestId);
       if(result && result.status == '0') {
         var number = await User.find({mobile:phoneNumber})
         if(number.length==0){
-          res.render('create_user/ask_email',{
+          res.render('create_user/create_user',{
             title: 'Create User',
             phone: phoneNumber,
           })
+        } else {
+          res.render('verify_user/status', {message: 'Account verified! 🎉', phone: phoneNumber});
         }
         //res.status(200).send('Account verified!');
         // User.find({mobile: phoneNumber}, function(err, user){
@@ -47,7 +49,6 @@ console.log('value of requestid in verify post handler is ' + requestId);
         //     res.render('verify_user/status', {message: 'Account verified! 🎉', phone: phoneNumber});
         //   }
         // })
-        res.render('verify_user/status', {message: 'Account verified! 🎉', phone: phoneNumber});
       } else {
         //res.status(401).send(result.error_text);
         res.render('verify_user/status', {message: result.error_text, requestId: requestId, phone: phoneNumber});

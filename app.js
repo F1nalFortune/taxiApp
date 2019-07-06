@@ -90,7 +90,10 @@ if (app.get('env') === 'development') {
 // mongoose.Promise = global.Promise;
 // Local Strat needs a model.
 // Connect to database
-mongoose.connect('mongodb://localhost/toads-taxi', {useNewUrlParser: true});
+// mongoose.connect('mongodb://localhost/toads-taxi', {useNewUrlParser: true});
+
+//HEROKU DATABASE
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {

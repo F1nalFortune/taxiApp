@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/stylesheets/billing.css">
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <div class="window">
+      <% include ../partials/navbar %>
+      <div class="content">
+        <input id="cardholder-name" type="text">
+        <!-- placeholder for Elements -->
+        <div id="card-element"></div>
+        <button id="card-button" data-secret="<%= client_secret %>">
+          Save Card
+        </button>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="js/index.js"></script>
+  <script>
+    $(document).ready(function(){
+      var elements = stripe.elements();
+      var cardElement = elements.create('card');
+      cardElement.mount('#card-element');
+
+      var cardholderName = document.getElementById('cardholder-name');
+      var cardButton = document.getElementById('card-button');
+      var clientSecret = cardButton.dataset.secret;
+
+      cardButton.addEventListener('click', function(ev) {
+        stripe.handleCardSetup(
+          clientSecret, cardElement, {
+            payment_method_data: {
+              billing_details: {name: cardholderName.value}
+            }
+          }
+        ).then(function(result) {
+          if (result.error) {
+            // Display error.message in your UI.
+          } else {
+            const customer = await stripe.customers.create({
+              payment_method: intent.payment_method,
+            });
+            // The setup has succeeded. Display a success message.
+          }
+        });
+      });
+    })
+  </script>
+</html>

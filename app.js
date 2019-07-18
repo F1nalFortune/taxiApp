@@ -9,6 +9,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var back = require('express-back');
 var internetAvailable = require("internet-available");
+var flash = require('express-flash');
 
 internetAvailable().then(function(){
   console.log("Internet available");
@@ -43,12 +44,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // PASSPORT STUFF
-app.use(require('express-session')({
-  secret: 'keyboardcat',
+app.use(require('cookie-session')({
+  name: 'session',
+  secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: { maxAge: 60000 }
 }));
+app.use(function(req, res, next){
+  res.locals.session = req.session;
+  next();
+});
 // app.use back has to go after express-session STUFF
+app.use(flash());
 app.use(back());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -61,9 +69,9 @@ app.use(status);
 
 // add authenticate method
 var User = require('./models/user');
-passport.use( new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// passport.use( new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -90,10 +98,10 @@ if (app.get('env') === 'development') {
 // mongoose.Promise = global.Promise;
 // Local Strat needs a model.
 // Connect to database
-// mongoose.connect('mongodb://localhost/toads-taxi', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/toads-taxi', {useNewUrlParser: true});
 
 //HEROKU DATABASE
-mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
+// mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {

@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var User = require('../models/user');
 var internetAvailable = require("internet-available");
+var stripe = require('stripe')(process.env.STRIPE_KEY);
 
 /* GET home page. */
 router.get('/home_screen', (req, res) => {
@@ -11,6 +12,13 @@ router.get('/home_screen', (req, res) => {
     user: req.user
   })
 })
+
+router.get('/drivers/all-drivers', (req, res) => {
+  User.find({driver: true}, function(err, users){
+    res.send(users);
+  })
+})
+
 router.get('/', hasInternet, (req, res, next) =>  {
   res.render('index', { title: 'Express', user: req.user });
 });
@@ -24,9 +32,20 @@ router.get('/enter_mobile', hasInternet, function(req, res){
 
 router.post('/submit-phone/', hasInternet, function(req, res){
   var phone = req.body.phone;
-
 })
 
+router.get('/billing/', hasInternet, function(req, res){
+  (async () => {
+    const intent = await stripe.setupIntents.create({
+      usage: 'on_session', // The default usage is off_session
+    })
+    res.render('billing', {
+      user: req.user,
+      client_secret: intent.client_secret
+    })
+  })();
+
+})
 
 module.exports = router;
 

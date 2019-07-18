@@ -194,7 +194,7 @@
 }
 .window .content {
   font-family: "Ek Mukta", sans-serif;
-  padding: 67px 4% 0;
+  padding: 67px 0px 0px 0px;
   text-align: justify;
   overflow: scroll;
   max-height: 100%;

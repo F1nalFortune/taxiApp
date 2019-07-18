@@ -3,6 +3,10 @@ var express = require('express');
 var router = express.Router();
 var Nexmo = require('nexmo');
 var User = require('../models/user');
+// var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+var stripe = require('stripe')(process.env.STRIPE_KEY);
+var passport = require('passport');
+
 
 
 var nexmo = new Nexmo({
@@ -77,18 +81,34 @@ router.post('/register', (req, res) => {
 });
 
 router.post("/create_user", (req, res) => {
+  // User.register( new User ({
+  //   email: req.body.email,
+  //   // password: req.body.password,
+  //   first: req.body.first,
+  //   last: req.body.last,
+  //   mobile: req.body.mobile,
+  //   username: req.body.email
+  // }), req.body.password, (err, user) => {
+  //   if (err)
+  //     console.log(err);
+  //     return res.render('index', { user: user });
+  //   passport.authenticate('local')(req, res, () => {
+  //     res.redirect('/home_screen');
+  //   });
+  // });
+  console.log(req.body);
   var user = new User({
     email: req.body.email,
     password: req.body.password,
     first: req.body.first,
     last: req.body.last,
-    mobile: req.body.mobile
+    mobile: req.body.mobile,
+    username: req.body.email
   });
   user.save(function(err) {
+    console.log(err)
     if (err) { return res.status(500).send({ msg: err.message }); }
-    res.render('user/home_screen', {
-      user: req.user
-    })
+    res.redirect('/login');
   });
 })
 

@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/stylesheets/billing.css">
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <div class="window">
+      <% include ../partials/navbar %>
+      <div class="content">
+        <div class='row'>
+          <div class='col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4'>
+            <form id='login-form' method="POST" action="/login">
+              <legend class='center'>Login</legend>
+              <div class="form-header">
+                <% if (Object.keys(errors).length === 0) { %>
+
+                <% } else { %>
+                  <ul class="errors-list">
+                    <% Object.values(errors).forEach(error => { %>
+                      <li class='alert alert-danger'><%= error.msg %></li>
+                    <% }) %>
+                  </ul>
+                <% } %>
+              </div>
+              <div class="form-group form-field">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" name="username" autofocus="autofocus"/>
+              </div>
+              <div class="form-group form-field">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" name="password"/>
+              </div>
+              <button class="btn btn-primary" type="submit">Login</button>
+              <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+              <a class="btn btn-link" href="/user/signup">Register</a>
+              <a class="btn btn-link" href="/forgot">Forgot Password?</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="js/index.js"></script>
+  <script>
+
+  </script>
+</html>

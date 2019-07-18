@@ -1,3 +1,34 @@
+// var mongoose = require('mongoose');
+// var Schema = mongoose.Schema;
+// var passportLocalMongoose = require('passport-local-mongoose');
+//
+//
+// var User = new Schema({
+//   email: { type: String, required: true, unique: true },
+//   username: { type: String, unique: true },
+//   password: { type: String },
+//   //stripe customer id
+//   customerId: String,
+//   mobile: { type: String, unique: true },
+//   first: { type: String, required: true },
+//   last: { type: String, required: true },
+//   resetPasswordToken: String,
+//   resetPasswordExpires: Date,
+//   admin: { type: Boolean, default: false },
+//   driver: { type: Boolean, default: false },
+//   //FOR DRIVERS
+//   capacity: { type: String }
+// });
+//
+// // Library assures usernames are unique
+// // easy to register new users
+// // encrypt passwords
+// // new user registration super helper
+// User.plugin(passportLocalMongoose);
+//
+// module.exports = mongoose.model('User', User);
+
+
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
@@ -16,14 +47,19 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  mobile: String,
+  username: { type: String },
+  password: { type: String },
+  //stripe customer id
+  customerId: String,
+  mobile: { type: String, unique: true },
   first: { type: String, required: true },
   last: { type: String, required: true },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   admin: { type: Boolean, default: false },
-  driver: { type: Boolean, default: false }
+  driver: { type: Boolean, default: false },
+  //FOR DRIVERS
+  capacity: { type: String }
 });
 
 userSchema.pre('save', function(next) {

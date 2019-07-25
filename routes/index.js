@@ -3,7 +3,9 @@ var router = express.Router();
 var passport = require('passport');
 var User = require('../models/user');
 var internetAvailable = require("internet-available");
-var stripe = require('stripe')(process.env.STRIPE_KEY);
+const stripePublishable = process.env.STRIPE_PUBLISHABLE;
+const stripeSecret = process.env.STRIPE_SECRET;
+const stripe = require("stripe")("sk_test_n3FpdK0lt1zNZX1K8MKCJkFX00ZicQ9rSU");
 
 /* GET home page. */
 router.get('/home_screen', (req, res) => {
@@ -35,17 +37,95 @@ router.post('/submit-phone/', hasInternet, function(req, res){
 })
 
 router.get('/billing/', hasInternet, function(req, res){
-  (async () => {
-    const intent = await stripe.setupIntents.create({
-      usage: 'on_session', // The default usage is off_session
-    })
-    res.render('billing', {
+  if(req.user.customerId){
+    var customer = req.user.customerId;
+  } else {
+    var customer = false;
+  }
+  const setupIntent = stripe.setupIntents.create({
+    usage: 'on_session', // The default usage is off_session
+  })
+  .then(setupIntent =>
+    res.render('user/billing', {
       user: req.user,
-      client_secret: intent.client_secret
+      client_secret: setupIntent.client_secret,
+      customer: customer,
+      intent_id: setupIntent.id
     })
+  )
+})
+
+router.post('/create-paymentmethod', function(req, res){
+  var payment = (async () => {
+    const paymentMethod = await stripe.paymentMethods.attach(
+      intent.payment_method,
+      {
+        customer: req.user.customerId,
+      }
+    );
   })();
+  res.send(payment)
+})
+
+router.get('/create-customer/:id', function(req, res){
+  var id = req.params.id;
+  stripe.setupIntents.retrieve(
+    id,
+    function(err, setupIntent) {
+      if(err){
+        console.log(err)
+      }
+      const customer = stripe.customers.create({
+        payment_method: setupIntent.payment_method,
+      })
+      .then(customer =>
+        User.findById(req.user.id, function(err, user){
+          user.customerId = customer.id;
+          user.save(function(err, user){
+            if(err){
+              console.log(err)
+            }
+            res.sendStatus(200)
+          })
+        }))
+    }
+  );
+})
+
+// router.get('/update-customerid', function(req, res){
+//   User.findById(req.user.id, function(err, user){
+//     user.customerId =
+//   })
+// })
+// router.post("/add-creditcard", (req, res) => {
+//
+//   (async () => {
+//     if(req.user.customerId){
+//       stripe.customers.update(req.user.customerId, {
+//         source: req.body.stripeToken,
+//       });
+//     } else {
+//       // Create a Customer:
+//       const customer = await stripe.customers.create({
+//         source: req.body.stripeToken,
+//         email: req.user.email
+//       });
+//
+//       User.findById(req.user.id, function(err, user){
+//         user.customerId = customer.id;
+//         user.save(function(err, user){
+//           req.flash('success', 'Success! You have successfully added a new card.')
+//           res.send(200)
+//         })
+//       })
+//     }
+//   })();
+// });
+
+router.post("/update-creditcard", (req, res) => {
 
 })
+
 
 module.exports = router;
 

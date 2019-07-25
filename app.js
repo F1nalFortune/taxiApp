@@ -10,6 +10,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var back = require('express-back');
 var internetAvailable = require("internet-available");
 var flash = require('express-flash');
+const stripePublishable = process.env.STRIPE_PUBLISHABLE;
+const stripeSecret = process.env.STRIPE_SECRET;
+const stripe = require("stripe")(stripeSecret);
 
 internetAvailable().then(function(){
   console.log("Internet available");

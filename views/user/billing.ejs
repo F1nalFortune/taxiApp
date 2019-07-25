@@ -2,6 +2,7 @@
   <head>
     <link rel="stylesheet" href="/stylesheets/billing.css">
     <% include ../partials/head %>
+
   </head>
   <body>
     <div class="window">
@@ -20,10 +21,11 @@
   <script type="text/javascript" src="js/index.js"></script>
   <script>
     $(document).ready(function(){
+      var stripe = Stripe('pk_test_1njsfmaxUijZhXr6xbB2044P00d1uj8d4h');
+
       var elements = stripe.elements();
       var cardElement = elements.create('card');
       cardElement.mount('#card-element');
-
       var cardholderName = document.getElementById('cardholder-name');
       var cardButton = document.getElementById('card-button');
       var clientSecret = cardButton.dataset.secret;
@@ -39,13 +41,31 @@
           if (result.error) {
             // Display error.message in your UI.
           } else {
-            const customer = await stripe.customers.create({
-              payment_method: intent.payment_method,
-            });
             // The setup has succeeded. Display a success message.
+            <% if(customer){ %>
+              (async () => {
+                const paymentMethod = await stripe.paymentMethods.attach(
+                  intent.payment_method,
+                  {
+                    customer: req.user.customerId,
+                  }
+                );
+              })();
+            <% } else { %>
+              $.ajax({
+                url:"/create-customer/<%= intent_id %>",
+                method:"GET",
+                success:function(data){
+                  alert(JSON.stringify(data, 0, 2))
+                  console.log(data)
+                }
+              })
+            <% } %>
           }
         });
       });
     })
+
   </script>
+      <script src="https://js.stripe.com/v3/"></script>
 </html>

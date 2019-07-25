@@ -55,16 +55,34 @@ router.get('/billing/', hasInternet, function(req, res){
   )
 })
 
-router.post('/create-paymentmethod', function(req, res){
-  var payment = (async () => {
-    const paymentMethod = await stripe.paymentMethods.attach(
-      intent.payment_method,
-      {
-        customer: req.user.customerId,
+router.get('/list-cards', function(req, res){
+  stripe.paymentMethods.list(
+    { customer: req.user.customerId, type: "card" },
+    function(err, paymentMethods) {
+      res.send(paymentMethods)
+    }
+  );
+})
+
+router.get('/create-paymentmethod/:id', function(req, res){
+  var id = req.params.id;
+  stripe.setupIntents.retrieve(
+    id,
+    function(err, setupIntent) {
+      if(err){
+        console.log(err)
       }
-    );
-  })();
-  res.send(payment)
+      const paymentMethod = stripe.paymentMethods.attach(
+        setupIntent.payment_method,
+        {
+          customer: req.user.customerId,
+        }
+      )
+      .then(paymentMethod =>
+        // req.flash('success_update', 'Success! Your card has been updated.')
+        res.send(paymentMethod))
+    }
+  );
 })
 
 router.get('/create-customer/:id', function(req, res){
@@ -85,6 +103,7 @@ router.get('/create-customer/:id', function(req, res){
             if(err){
               console.log(err)
             }
+            req.flash('success_add', 'Success! Your card has been added.');
             res.sendStatus(200)
           })
         }))

@@ -8,6 +8,11 @@
     <div class="window">
       <% include ../partials/navbar %>
       <div class="content">
+        <% if (messages.success_add) { %>
+          <div class="flash flash-success alert alert-success"><%= messages.success_add %></div>
+        <% } %>
+        <h1>Payment Methods</h1>
+        <div id='card-data'></div>
         <input id="cardholder-name" type="text">
         <!-- placeholder for Elements -->
         <div id="card-element"></div>
@@ -43,14 +48,14 @@
           } else {
             // The setup has succeeded. Display a success message.
             <% if(customer){ %>
-              (async () => {
-                const paymentMethod = await stripe.paymentMethods.attach(
-                  intent.payment_method,
-                  {
-                    customer: req.user.customerId,
-                  }
-                );
-              })();
+              $.ajax({
+                url:"/create-paymentmethod/<%= intent_id %>",
+                method:"GET",
+                success:function(data){
+                  alert(JSON.stringify(data, 0, 2))
+                  console.log(data)
+                }
+              })
             <% } else { %>
               $.ajax({
                 url:"/create-customer/<%= intent_id %>",
@@ -64,6 +69,74 @@
           }
         });
       });
+      var customer = "<%= customer %>"
+      if(customer){
+        var card_data = '';
+        $.getJSON("/list-cards", function(data){
+          card_data += "<div class='row'>";
+          $.each(data.data, function(key, value){
+            if(value.card.brand.toLowerCase() == "visa"){
+              var card = 'visa';
+            }
+            var card = value.card.brand.toLowerCase();
+            switch(card){
+              case 'visa':
+                var icon = "<i class='fab fa-cc-visa'></i>";
+                break;
+              case 'mastercard':
+                var icon = "<i class='fab fa-cc-mastercard'></i>";
+                break;
+              case 'american express':
+                var icon = "<i class='fab fa-cc-amex'></i>";
+                break;
+              case 'americanexpress':
+                var icon = "<i class='fab fa-cc-amex'></i>";
+                break;
+              case 'diners club':
+                var icon = "<i class='fab fa-cc-diners-club'></i>";
+                break;
+              case 'dinersclub':
+                var icon = "<i class='fab fa-cc-diners-club'></i>";
+                break;
+              case 'discover':
+                var icon ="<i class='fab fa-cc-discover'></i>";
+                break;
+              case 'jcb':
+                var icon ="<i class='fab fa-cc-jcb'></i>";
+                break;
+              case 'unionpay':
+                var icon = "<i class='fas fa-credit-card'></i>UnionPay";
+                break;
+              case 'unknown':
+                var icon = "<i class='fas fa-credit-card'></i>";
+                break;
+            }
+            card_data += "<div class='col-xs-12 col-sm-12'>";
+            card_data += "<div class='thumbnail'>";
+            card_data += "<div class='card-header'>";
+            card_data += icon;
+            card_data += "</div>";
+            card_data += "<div class='caption'>";
+            card_data += "<p>xxxxxxxxxxxx" + value.card.last4 +"</p>";
+            card_data += "<p>" + value.card.exp_month + "/" + value.card.exp_year + "</p>";
+            card_data += "<a href='#' class='card-link'>Update</a>";
+            card_data += "<a href='#' class='card-link'>Delete</a>";
+            card_data += "</div>";
+            card_data += "</div>";
+            card_data += "</div>";
+          })
+          $("#card-data").html(card_data)
+        })
+        $.ajax({
+          url:"/list-cards",
+          method:"GET",
+          success:function(data){
+
+            console.log(JSON.stringify(data, 0, 2))
+          }
+        })
+      }
+
     })
 
   </script>

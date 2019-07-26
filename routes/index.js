@@ -36,7 +36,7 @@ router.post('/submit-phone/', hasInternet, function(req, res){
   var phone = req.body.phone;
 })
 
-router.get('/billing/', hasInternet, function(req, res){
+router.get('/wallet/', hasInternet, function(req, res){
   if(req.user.customerId){
     var customer = req.user.customerId;
   } else {
@@ -46,7 +46,7 @@ router.get('/billing/', hasInternet, function(req, res){
     usage: 'on_session', // The default usage is off_session
   })
   .then(setupIntent =>
-    res.render('user/billing', {
+    res.render('user/wallet', {
       user: req.user,
       client_secret: setupIntent.client_secret,
       customer: customer,
@@ -54,6 +54,42 @@ router.get('/billing/', hasInternet, function(req, res){
     })
   )
 })
+
+router.get('/delete-card/:id', function(req, res){
+  stripe.paymentMethods.detach(
+    req.params.id,
+    function(err, paymentMethod) {
+      req.flash('delete', 'Success! Removed ' + paymentMethod.card.brand + ' card ending in + ' + paymentMethod.card.last4 + '.')
+      res.redirect('/wallet')
+    }
+  )
+})
+
+// router.get('/update-card/:id', function(req, res){
+//   var id = req.params.id;
+//   stripe.customers.retrieveSource(
+//     req.user.customerId,
+//     req.params.id,
+//     function(err, card) {
+//       res.render('user/update_card', {
+//         user: req.user,
+//         card: card
+//       })
+//   }
+//   )
+// })
+
+// router.post('/update-card/:id', function(req,res){
+//   var id = req.params.id;
+//   stripe.customers.updateSource(
+//     req.user.customerId,
+//     id,
+//     { name: req.body.cardholdername },
+//     function(err, card) {
+//       // asynchronously called
+//     }
+//   );
+// })
 
 router.get('/list-cards', function(req, res){
   stripe.paymentMethods.list(
@@ -63,6 +99,7 @@ router.get('/list-cards', function(req, res){
     }
   );
 })
+
 
 router.get('/create-paymentmethod/:id', function(req, res){
   var id = req.params.id;
@@ -107,6 +144,15 @@ router.get('/create-customer/:id', function(req, res){
             res.sendStatus(200)
           })
         }))
+    }
+  );
+})
+
+router.get('/retrieve-customer/:id', function(req, res){
+  stripe.customers.retrieve(
+    req.user.customerId,
+    function(err, customer) {
+      res.send(customer)
     }
   );
 })
